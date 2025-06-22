@@ -137,10 +137,10 @@
     }
 
     @keyframes floaty {
-  0%   { transform: translateY(0); }
-  50%  { transform: translateY(-6px); }
-  100% { transform: translateY(0); }
-}
+      0%   { transform: translateY(0); }
+      50%  { transform: translateY(-6px); }
+      100% { transform: translateY(0); }
+    }
 
     @media (max-width: 850px) {
       #game { transform: scale(0.8); transform-origin: top; }
@@ -225,13 +225,13 @@
 </div>
 
 <footer>
-<div style="text-align: center; margin-top: 80px; margin-bottom: 0px;">
-  <img src="akhil_signature.PNG"
-       alt="Akhil Signature"
-       style="width: 160px; height: auto; opacity: 0.96;">
-</div>
-  I made this. It's real. it's valid.<br>
-  <a href="mailto:projects@akhilkommuru.com">projects@akhilkommuru.com</a>
+  <div style="text-align: center; margin-top: 80px; margin-bottom: 0px;">
+    <img src="akhil_signature.PNG"
+         alt="Akhil Signature"
+         style="width: 160px; height: auto; opacity: 0.96;">
+  </div>
+    I made this. It's real. it's valid.<br>
+    <a href="mailto:projects@akhilkommuru.com">projects@akhilkommuru.com</a>
 </footer>
 
 <script>
@@ -270,6 +270,7 @@
         requestAnimationFrame(animateDown);
       }
     }
+    
     function animateDown(timestamp) {
       if (!start) start = timestamp;
       const elapsed = timestamp - start;
@@ -307,8 +308,7 @@ function checkCollision() {
   const dinoRect = dino.getBoundingClientRect();
   const obstacleRect = obstacle.getBoundingClientRect();
 
-  // Chrome Dino–inspired tight hitbox tuning
-  const hitboxShrink = 10; // ~3px on each side
+  const hitboxShrink = 10;
 
   const dinoLeft = dinoRect.left + hitboxShrink;
   const dinoRight = dinoRect.right - hitboxShrink;
