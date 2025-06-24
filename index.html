@@ -58,9 +58,15 @@
 
     .cloud {
       position: absolute;
+      animation: floatUpDown 6s ease-in-out infinite;
       filter: blur(1.5px);
       opacity: 0.1;
       color: white;
+    }
+
+    @keyframes floatUpDown {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
     }
 
     .cloud svg {
