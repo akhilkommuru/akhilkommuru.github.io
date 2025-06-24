@@ -19,10 +19,12 @@
     }
     #game {
       position: relative;
-      width: 800px;
-      height: 400px;
+      /* <!-- 800px = 84.92569002123142vh --> */
+      width: 10000.92569002123142vh; 
+      height: 42.46284501061571vh;
       overflow: hidden;
-      margin-top: 200px;
+      /* height from top of the screen */
+      margin-top: 21.231422505307854vh;
     }
 
     h1, h3 {
@@ -157,11 +159,6 @@
 
 <div id="game">
 
-  <!-- Clouds -->
-  <div class="cloud" style="top: 50px; left: 0;">
-    <svg viewBox="0 0 64 64"><path d="M48 24a12 12 0 0 0-24 0 9 9 0 0 0-6 15 9 9 0 0 0 18 0h12a6 6 0 0 0 0-12z"/></svg>
-  </div>
-
 <!-- Origami Character -->
 <svg id="dino" xmlns="http://www.w3.org/2000/svg"
   viewBox="0 0 256 256"
@@ -179,24 +176,24 @@
   <path d="M143.38,17.85a8,8,0,0,0-12.63,3.41l-22,60.41L84.59,58.26a8,8,0,0,0-11.93.89C51,87.53,40,116.08,40,144a88,88,0,0,0,176,0C216,84.55,165.21,36,143.38,17.85Zm40.51,135.49a57.6,57.6,0,0,1-46.56,46.55A7.65,7.65,0,0,1,136,200a8,8,0,0,1-1.32-15.89c16.57-2.79,30.63-16.85,33.44-33.45a8,8,0,0,1,15.78,2.68Z"/>
 </svg>
 
-<!-- Star -->
-<div class="star" style="position: absolute; top: 40px; left: 100px; z-index: 1;">
-  <svg viewBox="0 0 24 24" width="6" height="6" fill="white">
-    <circle cx="12" cy="12" r="2" />
-  </svg>
+<!-- Stars -->
+<div class="star" style="position: absolute; top: 8%; left: 5%; z-index: 1;">
+  <svg viewBox="0 0 24 24" width="5" height="5" fill="white"><circle cx="12" cy="12" r="2" /></svg>
 </div>
-
-<!-- More stars -->
-<div class="star" style="position: absolute; top: 120px; left: 300px; z-index: 1;">
-  <svg viewBox="0 0 24 24" width="4" height="4" fill="white">
-    <circle cx="12" cy="12" r="1.5" />
-  </svg>
+<div class="star" style="position: absolute; top: 15%; left: 20%; z-index: 1;">
+  <svg viewBox="0 0 24 24" width="4" height="4" fill="white"><circle cx="12" cy="12" r="1.6" /></svg>
 </div>
-
-<div class="star" style="position: absolute; top: 80px; left: 500px; z-index: 1;">
-  <svg viewBox="0 0 24 24" width="5" height="5" fill="white">
-    <circle cx="12" cy="12" r="1.8" />
-  </svg>
+<div class="star" style="position: absolute; top: 5%; left: 40%; z-index: 1;">
+  <svg viewBox="0 0 24 24" width="6" height="6" fill="white"><circle cx="12" cy="12" r="2.4" /></svg>
+</div>
+<div class="star" style="position: absolute; top: 12%; left: 60%; z-index: 1;">
+  <svg viewBox="0 0 24 24" width="3" height="3" fill="white"><circle cx="12" cy="12" r="1" /></svg>
+</div>
+<div class="star" style="position: absolute; top: 20%; left: 80%; z-index: 1;">
+  <svg viewBox="0 0 24 24" width="4" height="4" fill="white"><circle cx="12" cy="12" r="1.5" /></svg>
+</div>
+<div class="star" style="position: absolute; top: 10%; left: 95%; z-index: 1;">
+  <svg viewBox="0 0 24 24" width="5" height="5" fill="white"><circle cx="12" cy="12" r="2" /></svg>
 </div>
 
   <!-- Ground -->
@@ -247,9 +244,6 @@
   let obstacleX = gameWidth;
   let gameOver = false;
 
-  const clouds = [...document.querySelectorAll('.cloud')];
-  const cloudSpeeds = [0.2, 0.1, 0.15];
-
   function jump() {
     if (isJumping || gameOver) return;
     isJumping = true;
@@ -293,14 +287,43 @@
     obstacle.style.left = `${obstacleX}px`;
   }
 
-  function moveClouds() {
-    clouds.forEach((cloud, i) => {
-      let left = parseFloat(cloud.style.left);
-      left -= cloudSpeeds[i];
-      if (left < -200) left = gameWidth;
-      cloud.style.left = left + 'px';
-    });
+  const cloudCount = 4;
+  const cloudContainer = document.getElementById('game');
+  const clouds = [];
+
+  for (let i = 0; i < cloudCount; i++) {
+    const cloud = document.createElement('div');
+    cloud.className = 'cloud';
+
+    const topPercent = 6 + Math.random() * 6;
+    const leftPercent = Math.random() * 100;
+    const speed = 0.002 + Math.random() * 0.006;
+    cloud.style.top = `${topPercent}%`;
+    cloud.style.left = `${leftPercent}%`;
+    cloud.dataset.speed = speed;
+
+    cloud.innerHTML = `
+      <svg viewBox="0 0 64 64" width="150" height="100">
+        <path d="M48 24a12 12 0 0 0-24 0
+                9 9 0 0 0-6 15 9 9 0 0 0 18 0
+                h12a6 6 0 0 0 0-12z"/>
+      </svg>`;
+
+    cloudContainer.appendChild(cloud);
+    clouds.push(cloud);
   }
+
+function moveClouds() {
+  clouds.forEach((cloud) => {
+    let left = parseFloat(cloud.style.left);
+    const speed = parseFloat(cloud.dataset.speed);
+
+    left -= speed;
+    if (left < -20) left = 100;
+
+    cloud.style.left = `${left}%`;
+  });
+}
 
 function checkCollision() {
   if (gameOver) return;
